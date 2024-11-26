@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Título de la aplicación
-st.title("Desplegable de Sí y No")
+st.title("Selecciona una Opción")
 
 # Desplegable con opciones "Sí" y "No"
 opcion = st.selectbox("Elige una opción:", ["Sí", "No"])
