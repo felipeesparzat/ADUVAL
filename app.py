@@ -29,8 +29,11 @@ if st.button("Guardar"):
         # Si no existe, creamos un DataFrame vacío
         df = pd.DataFrame(columns=["Opción"])
 
-    # Añadir la nueva opción al DataFrame
-    df = df.append({"Opción": opcion}, ignore_index=True)
+    # Crear un nuevo DataFrame con la opción seleccionada
+    nuevo_registro = pd.DataFrame({"Opción": [opcion]})
+
+    # Usar pd.concat para agregar el nuevo registro al DataFrame existente
+    df = pd.concat([df, nuevo_registro], ignore_index=True)
 
     # Guardar los datos en el archivo CSV
     df.to_csv(archivo_csv, index=False)
