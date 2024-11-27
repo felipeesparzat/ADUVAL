@@ -2,7 +2,6 @@ import streamlit as st
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
-class VUTMTC;
 # Función para exportar los valores a un archivo PDF
 def exportar_a_pdf(valor_utm, tipo_cambio):
     # Crear un archivo PDF

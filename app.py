@@ -1,3 +1,3 @@
-from forms.ivutmytcv.py import VUTMTC
+from forms.ivutmytcv.py
 
-VUTMTC()
+ivutmytcv()
