@@ -1,39 +1,48 @@
-import streamlit as st
-import os
-import pandas as pd
+import tkinter as tk
+from tkinter import messagebox
 
-# Título de la aplicación
-st.title("Selecciona una Opción")
-
-# Desplegable con opciones "Sí" y "No"
-opcion = st.selectbox("Elige una opción:", ["Sí", "No"])
-
-# Mostrar la opción seleccionada
-st.write(f"Has seleccionado: {opcion}")
-
-# Crear directorio si no existe
-directorio = './datos/guardar_opciones'
-if not os.path.exists(directorio):
-    os.makedirs(directorio)
-
-# Ruta del archivo CSV
-archivo_csv = os.path.join(directorio, 'opciones_seleccionadas.csv')
-
-# Botón de guardar
-if st.button("Guardar"):
-    # Crear o leer el archivo CSV
-    if os.path.exists(archivo_csv):
-        # Si el archivo ya existe, lo leemos
-        df = pd.read_csv(archivo_csv)
+# Función para guardar los valores ingresados
+def guardar_valores():
+    valor_utm = entry_utm.get()  # Obtener valor de UTM
+    tipo_cambio = entry_tipo_cambio.get()  # Obtener valor de Tipo de Cambio
+    
+    # Verificar que ambos campos están llenos
+    if valor_utm and tipo_cambio:
+        # Aquí podrías guardar los valores en una base de datos o archivo, si lo deseas
+        messagebox.showinfo("Éxito", "Valores guardados con éxito")
+        entry_utm.delete(0, tk.END)  # Limpiar campo UTM
+        entry_tipo_cambio.delete(0, tk.END)  # Limpiar campo Tipo de Cambio
     else:
-        # Si no existe, creamos un DataFrame vacío
-        df = pd.DataFrame(columns=["Opción"])
+        messagebox.showerror("Error", "Por favor complete ambos campos")
 
-    # Crear un nuevo DataFrame con la opción seleccionada
-    nuevo_registro = pd.DataFrame({"Opción": [opcion]})
+# Crear la ventana principal
+root = tk.Tk()
+root.title("Formulario de Valores")
 
-    # Usar pd.concat para agregar el nuevo registro al DataFrame existente
-    df = pd.concat([df, nuevo_registro], ignore_index=True)
+# Configurar el tamaño de la ventana
+root.geometry("300x200")
+
+# Etiqueta y campo de texto para el valor de UTM
+label_utm = tk.Label(root, text="Valor de UTM:")
+label_utm.pack(pady=10)
+
+entry_utm = tk.Entry(root)
+entry_utm.pack(pady=5)
+
+# Etiqueta y campo de texto para el valor de Tipo de Cambio
+label_tipo_cambio = tk.Label(root, text="Valor de Tipo de Cambio:")
+label_tipo_cambio.pack(pady=10)
+
+entry_tipo_cambio = tk.Entry(root)
+entry_tipo_cambio.pack(pady=5)
+
+# Botón para guardar los valores
+btn_guardar = tk.Button(root, text="Guardar", command=guardar_valores)
+btn_guardar.pack(pady=20)
+
+# Iniciar el bucle principal de la interfaz gráfica
+root.mainloop()
+
 
     # Guardar los datos en el archivo CSV
     df.to_csv(archivo_csv, index=False)
