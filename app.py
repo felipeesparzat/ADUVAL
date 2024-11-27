@@ -65,9 +65,3 @@ btn_guardar.pack(pady=20)
 
 # Iniciar el bucle principal de la interfaz gráfica
 root.mainloop()
-
-    # Guardar los datos en el archivo CSV
-    df.to_csv(archivo_csv, index=False)
-
-    # Confirmación de guardado
-    st.write(f"¡Opción '{opcion}' guardada correctamente en {archivo_csv}!")
