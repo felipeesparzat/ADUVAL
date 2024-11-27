@@ -1,26 +1,6 @@
-import tkinter as tk
-from tkinter import messagebox
+import streamlit as st
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-
-# Función para guardar los valores y exportarlos como PDF
-def guardar_valores():
-    valor_utm = entry_utm.get()  # Obtener valor de UTM
-    tipo_cambio = entry_tipo_cambio.get()  # Obtener valor de Tipo de Cambio
-    
-    # Verificar que ambos campos están llenos
-    if valor_utm and tipo_cambio:
-        # Aquí se genera el archivo PDF
-        exportar_a_pdf(valor_utm, tipo_cambio)
-        
-        # Mostrar mensaje de éxito
-        messagebox.showinfo("Éxito", "Valores exportados a PDF con éxito")
-        
-        # Limpiar los campos
-        entry_utm.delete(0, tk.END)
-        entry_tipo_cambio.delete(0, tk.END)
-    else:
-        messagebox.showerror("Error", "Por favor complete ambos campos")
 
 # Función para exportar los valores a un archivo PDF
 def exportar_a_pdf(valor_utm, tipo_cambio):
@@ -37,31 +17,29 @@ def exportar_a_pdf(valor_utm, tipo_cambio):
     
     # Guardar el archivo PDF
     c.save()
+    
+    return archivo_pdf
 
-# Crear la ventana principal
-root = tk.Tk()
-root.title("Formulario de Valores")
+# Título de la aplicación
+st.title("Formulario de Valores")
 
-# Configurar el tamaño de la ventana
-root.geometry("300x200")
+# Ingreso de valores a través de formularios
+valor_utm = st.text_input("Valor de UTM")
+tipo_cambio = st.text_input("Valor de Tipo de Cambio")
 
-# Etiqueta y campo de texto para el valor de UTM
-label_utm = tk.Label(root, text="Valor de UTM:")
-label_utm.pack(pady=10)
-
-entry_utm = tk.Entry(root)
-entry_utm.pack(pady=5)
-
-# Etiqueta y campo de texto para el valor de Tipo de Cambio
-label_tipo_cambio = tk.Label(root, text="Valor de Tipo de Cambio:")
-label_tipo_cambio.pack(pady=10)
-
-entry_tipo_cambio = tk.Entry(root)
-entry_tipo_cambio.pack(pady=5)
-
-# Botón para guardar los valores
-btn_guardar = tk.Button(root, text="Exportar a PDF", command=guardar_valores)
-btn_guardar.pack(pady=20)
-
-# Iniciar el bucle principal de la interfaz gráfica
-root.mainloop()
+# Botón para guardar los valores y exportarlos a PDF
+if st.button("Exportar a PDF"):
+    if valor_utm and tipo_cambio:
+        archivo_pdf = exportar_a_pdf(valor_utm, tipo_cambio)
+        st.success("Valores exportados a PDF con éxito")
+        
+        # Opción para descargar el archivo PDF
+        with open(archivo_pdf, "rb") as f:
+            st.download_button(
+                label="Descargar PDF",
+                data=f,
+                file_name=archivo_pdf,
+                mime="application/pdf"
+            )
+    else:
+        st.error("Por favor complete ambos campos")
